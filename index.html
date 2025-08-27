@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ESP8266 Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<body>
+  <h2>ESP8266 Dashboard</h2>
+
+  <p><strong>Potentiometer Value:</strong> <span id="potValue">--</span></p>
+
+  <p>
+    <button onclick="setLED('ON')">Turn LED ON</button>
+    <button onclick="setLED('OFF')">Turn LED OFF</button>
+  </p>
+
+  <script>
+    // 🔑 Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZ1aSOVOyS-uqAUlMbk2o0-rThYPZn6NU",
+      databaseURL: "https://esp8266-475a3-default-rtdb.asia-southeast1.firebasedatabase.app/"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // 🌟 Listen for potentiometer value
+    db.ref("/POT_VALUE").on("value", (snapshot) => {
+      document.getElementById("potValue").innerText = snapshot.val();
+    });
+
+    // 💡 Control LED
+    function setLED(status) {
+      db.ref("/LED_STATUS").set(status);
+    }
+  </script>
+</body>
+</html>
